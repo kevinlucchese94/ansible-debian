@@ -1,7 +1,11 @@
-- name: Create Home directory for plexserver
+- name: Create Home directory for Photoprism
   file:
     path: /home/kevin/plexserver
     state: directory
 
+- name: Create Docker Compose file for plexserver
+  copy:
+    src: templates/docker-compose.yml
+    dest: /home/kevin/docker-compose.yml
 - name: Install plexserver using Docker Compose
-  command: "docker build -t plexinc/pms-docker:latest -f Dockerfile.armv7 /home/kevin/plexserver  . # or arm64d"
+  command: "docker-compose -f /home/kevin/plexserver/docker-compose.yml up -d"
