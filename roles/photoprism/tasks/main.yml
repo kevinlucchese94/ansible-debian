@@ -2,9 +2,11 @@
   file:
     path: /home/kevin/photoprism
     state: directory
+    
 - name: Create Docker Compose file for Photoprism
   copy:
     src: templates/docker-compose.yml
-    dest: /home/kevin/docker-compose.yml
+    dest: /home/kevin/photoprism/docker-compose.yml
+
 - name: Install Photoprism using Docker Compose
-  command: "docker-compose -f /home/kevin/docker-compose.yml up -d"
+  command: "docker-compose -f /home/kevin/photoprism/docker-compose.yml up -d"
