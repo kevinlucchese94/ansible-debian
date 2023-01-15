@@ -1,0 +1,17 @@
+- name: Install cockpit package
+  apt:
+    name: cockpit
+    state: present
+    update_cache: yes
+
+- name: Download cockpit-navigator package
+  command: wget https://github.com/45Drives/cockpit-navigator/releases/download/v0.5.10/cockpit-navigator_0.5.10-1focal_all.deb
+
+- name: Install cockpit-navigator package
+  command: dpkg -i cockpit-navigator_0.5.10-1focal_all.deb
+
+- name: Enable and start cockpit service
+  service:
+    name: cockpit.socket
+    state: started
+    enabled: yes

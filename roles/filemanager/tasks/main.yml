@@ -1,0 +1,12 @@
+- name: Create filemanager directory
+  file:
+    path: /home/pi/filemanager
+    state: directory
+
+- name: Copy the docker-compose.yml file
+  copy:
+    src: templates/docker-compose.yml
+    dest: /home/pi/filemanager/docker-compose.yml
+    
+- name: Create filemanager container
+  command: docker-compose -f /home/pi/filemanager/docker-compose.yml up -d

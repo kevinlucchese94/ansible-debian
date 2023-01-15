@@ -1,0 +1,8 @@
+- name: Main Raspberry
+  hosts:
+    - localhost
+  become: true
+  roles:
+    - cockpit
+    - docker
+    - filemanager
