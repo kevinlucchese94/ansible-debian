@@ -1,3 +1,9 @@
+- name: Install packages for cockpit
+  apt:
+    name:
+      - dpkg
+    state: present
+
 - name: Install cockpit package
   apt:
     name: cockpit
