@@ -1,0 +1,7 @@
+- name: Create Home directory for plexserver
+  file:
+    path: /home/kevin/plexserver
+    state: directory
+
+- name: Install plexserver using Docker Compose
+  command: "docker build -t plexinc/pms-docker:latest -f Dockerfile.armv7 /home/kevin/plexserver  . # or arm64d"
