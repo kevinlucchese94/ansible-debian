@@ -22,6 +22,11 @@
     repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
     state: present
 
+- name: Update package manager
+  apt:
+    update_cache: true
+
+
 - name: Install Docker
   apt:
     name: docker-ce

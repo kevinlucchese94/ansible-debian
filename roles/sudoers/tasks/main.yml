@@ -1,0 +1,7 @@
+- name: Add kevin to the sudoers file
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^kevin'
+    line: 'kevin ALL=(ALL) NOPASSWD:ALL'
+

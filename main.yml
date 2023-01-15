@@ -3,6 +3,7 @@
     - localhost
   become: true
   roles:
+    - sudoers
     - cockpit
     - docker
     - filemanager
