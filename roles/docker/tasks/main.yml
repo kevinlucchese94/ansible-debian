@@ -22,9 +22,9 @@
 - name: get docker convenience script
   shell: curl -fsSL https://get.docker.com -o get-docker.sh
   args:
-    creates: /home/pi/get-docker.sh
+    creates: /home/kevin/get-docker.sh
 - name: install docker
-  shell: sh /home/pi/get-docker.sh
+  shell: sh /home/kevin/get-docker.sh
   args:
     creates: /usr/bin/docker
 - name: make pi user execute docker commands
