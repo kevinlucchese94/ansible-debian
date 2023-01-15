@@ -6,6 +6,6 @@
 - name: Create Docker Compose file for plexserver
   copy:
     src: templates/docker-compose.yml
-    dest: /home/kevin/docker-compose.yml
+    dest: /home/kevin/plexserver/docker-compose.yml
 - name: Install plexserver using Docker Compose
   command: "docker-compose -f /home/kevin/plexserver/docker-compose.yml up -d"
