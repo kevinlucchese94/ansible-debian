@@ -1,0 +1,9 @@
+- name: Create Home directory for Scripts
+  file:
+    path: /home/kevin/scripts
+    state: directory
+    
+- name: Create file for Scripts
+  copy:
+    src: templates/mount_rsync_foto.sh
+    dest: /home/kevin/scripts/mount_rsync_foto.sh
