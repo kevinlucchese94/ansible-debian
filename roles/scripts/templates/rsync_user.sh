@@ -1,8 +1,8 @@
 #!/bin/sh
 
-#RSYNC DEI VIDEO DA SISTEMARE
-remote_dir="/home/kevin/foto_e_video/Foto/Da sistemare/"
-local_dir="/home/kevin/foto_e_video/Video/Da sistemare/"
+#RSYNC DEI VIDEO 
+remote_dir="/home/kevin/foto_e_video/Video"
+local_dir="/home/kevin/"
 
 rsync -zvrah --delete \
   --include="*.[Mm][Oo][Vv]" \
@@ -14,9 +14,9 @@ rsync -zvrah --delete \
   --exclude="*.HEIC"  \
   "$remote_dir" "$local_dir" 
 
-#RSYNC DEI VIDEO 
-remote_dir="/home/kevin/foto_e_video/Video"
-local_dir="/home/kevin/"
+#RSYNC DEI VIDEO DA SISTEMARE
+remote_dir="/home/kevin/foto_e_video/Foto/Da sistemare/"
+local_dir="/home/kevin/foto_e_video/Video/Da sistemare/"
 
 rsync -zvrah --delete \
   --include="*.[Mm][Oo][Vv]" \
