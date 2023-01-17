@@ -7,3 +7,8 @@
   copy:
     src: templates/mount_samba.sh
     dest: /home/kevin/scripts/mount_samba.sh
+
+- name: Create file for rsync_user
+  copy:
+    src: templates/rsync_user.sh
+    dest: /home/kevin/scripts/rsync_user.sh
