@@ -4,7 +4,7 @@
 if grep -qs '/home/kevin/foto_e_video' /proc/mounts; then
   echo "Il disco samba è già montato."
     # impostazione delle cartelle di origine e destinazione
-  bash rsync_foto.sh
+  bash rsync_user.sh
 else
   # monta il disco samba sulla cartella specificata
   sudo mount -t cifs -o username=pi,password=Erminio67,rw //192.168.5.198/foto_e_video /home/kevin/foto_e_video

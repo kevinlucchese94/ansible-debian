@@ -2,7 +2,7 @@
 
 #RSYNC DEI VIDEO DA SISTEMARE
 remote_dir="/home/kevin/foto_e_video/Foto/Da sistemare/"
-local_dir="/home/kevin/Video/"
+local_dir="/home/kevin/foto_e_video/Video/Da sistemare/"
 
 rsync -zvrah --delete \
   --include="*.[Mm][Oo][Vv]" \
