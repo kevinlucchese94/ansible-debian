@@ -5,5 +5,5 @@
     
 - name: Create file for Scripts
   copy:
-    src: templates/mount_rsync_foto.sh
-    dest: /home/kevin/scripts/mount_rsync_foto.sh
+    src: templates/mount_samba.sh
+    dest: /home/kevin/scripts/mount_samba.sh
