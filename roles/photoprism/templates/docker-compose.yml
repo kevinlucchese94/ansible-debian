@@ -43,7 +43,7 @@ services:
       - "2342:2342" # HTTP port (host:container)
     environment:
       PHOTOPRISM_ADMIN_USER: "admin"                 # superadmin username
-      PHOTOPRISM_ADMIN_PASSWORD: "Erminio67"          # initial superadmin password (minimum 8 characters)
+      PHOTOPRISM_ADMIN_PASSWORD: "insecure"          # initial superadmin password (minimum 8 characters)
       PHOTOPRISM_AUTH_MODE: "password"               # authentication mode (public, password)
       PHOTOPRISM_SITE_URL: "http://photoprism.me:2342/"  # server URL in the format "http(s)://domain.name(:port)/(path)"
       PHOTOPRISM_ORIGINALS_LIMIT: 5000               # file size limit for originals in MB (increase for high-res video)
@@ -95,8 +95,8 @@ services:
     working_dir: "/photoprism" # do not change or remove
     ## Storage Folders: "~" is a shortcut for your home directory, "." for the current directory
     volumes:
-      - "/home/kevin/Foto:/photoprism/Foto"                # Example
-      - "/home/kevin/Video:/photoprism/Video"
+      - "/home/kevin/Foto:/photoprism/originals/Foto"                # Example
+      - "/home/kevin/Video:/photoprism/originals/Video"
       - "~/Pictures:/photoprism/originals"               # Original media files (DO NOT REMOVE)
       # - "/example/family:/photoprism/originals/family" # *Additional* media folders can be mounted like this
       # - "~/Import:/photoprism/import"                  # *Optional* base folder from which files can be imported to originals
