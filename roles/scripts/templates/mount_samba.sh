@@ -10,7 +10,7 @@ else
   sudo mount -t cifs -o username=pi,password=Erminio67,rw //192.168.5.198/foto_e_video /home/kevin/foto_e_video
   if [ $? -eq 0 ]; then
     echo "Il disco samba è stato montato con successo."
-    bash rsync_foto.sh
+    bash rsync_user.sh
   else
     echo "Si è verificato un errore nel montare il disco samba."
   fi
