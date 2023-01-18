@@ -12,3 +12,19 @@
   copy:
     src: templates/rsync_user.sh
     dest: /home/kevin/scripts/rsync_user.sh
+    
+- name: Add task to user crontab
+  cron:
+    name: "Task name"
+    user: "kevin"
+    minute: "0"
+    hour: "9"
+    job: "bash /home/kevin/scripts/rsync_user.sh"
+
+- name: Add task to root crontab
+  cron:
+    name: "Task name"
+    user: "root"
+    minute: "0"
+    hour: "21"
+    job: "/home/kevin/scripts/rsync_root.sh"
