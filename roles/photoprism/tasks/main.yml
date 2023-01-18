@@ -2,22 +2,12 @@
   file:
     path: /home/kevin/photoprism
     state: directory
-
-    
-- name: Check if Photoprism container exists
-  shell: "docker ps -a --filter name=photoprism --format '{{.Names}}'"
-  register: photoprism_container
-
-- name: Remove existing Photoprism container
-  shell: "docker rm -f {{ photoprism_container.stdout }}"
-  when: photoprism_container.stdout != ""
-    
+   
 - name: Create Docker Compose file for Photoprism
   copy:
     src: templates/docker-compose.yml
     dest: /home/kevin/photoprism/docker-compose.yml
-  when: photoprism_container.stdout == ""
     
 - name: Install Photoprism using Docker Compose
   command: "docker-compose -f /home/kevin/photoprism/docker-compose.yml up -d"
-  when: photoprism_container.stdout == ""
+
