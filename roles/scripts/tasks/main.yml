@@ -20,16 +20,41 @@
     
 - name: Add task to user crontab
   cron:
-    name: "Task name"
+    name: "RSYNC FOTO E VIDEO"
     user: "kevin"
     minute: "0"
     hour: "9"
-    job: "bash /home/kevin/scripts/rsync_user.sh"
+    job: "/home/kevin/scripts/rsync_user.sh"
 
 - name: Add task to root crontab
   cron:
-    name: "Task name"
+    name: "RSYNC FOTO E VIDEO"
     user: "root"
     minute: "0"
     hour: "21"
     job: "/home/kevin/scripts/rsync_root.sh"
+
+- name: Set permissions of file to be executable
+  command: chmod +x /home/kevin/scripts/rsync_user.sh
+- name: Set permissions of file to be executable
+  command: chmod +x /home/kevin/scripts/rsync_root.sh
+
+- name: Set permissions of file to be executable
+  file:
+    path: /home/kevin/scripts/rsync_user.sh
+    mode: "755"
+    state: file
+
+- name: Set permissions of file to be executable
+  file:
+    path: /home/kevin/scripts/rsync_root.sh
+    mode: "755"
+    state: file
+
+- name: Add task to root crontab
+  cron:
+    name: "SHUTDOWN "
+    user: "root"
+    minute: "30"
+    hour: "23"
+    job: "/usr/sbin/shutdown -h now"
