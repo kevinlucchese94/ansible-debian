@@ -1,0 +1,83 @@
+- name: Install required packages
+  apt:
+    name:
+      - ffmpeg
+      - libmariadb3
+      - libpq5
+      - libmicrohttpd12
+    state: present
+    update_cache: yes
+
+- name: Download motion package
+  command: wget https://github.com/Motion-Project/motion/releases/download/release-4.3.2/pi_buster_motion_4.3.2-1_armhf.deb
+
+- name: Install motion package
+  command: dpkg -i pi_buster_motion_4.3.2-1_armhf.deb
+
+- name: Stop and disable motion service
+  service:
+    name: motion
+    state: stopped
+    enabled: no
+
+- name: Install python2 and python-dev-is-python2
+  apt:
+    name:
+      - python2
+      - python-dev-is-python2
+    state: present
+    update_cache: yes
+
+- name: Download and install pip
+  command: curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+
+- name: Download and install pip part2
+  command: python2 get-pip.py
+
+- name: Install additional packages for motioneye
+  apt:
+    name:
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - libjpeg-dev
+      - zlib1g-dev
+    state: present
+    update_cache: yes
+
+- name: Install motioneye
+  command: pip2 install motioneye
+
+- name: Create motioneye config directory
+  file:
+    path: /etc/motioneye
+    state: directory
+
+- name: Copy motioneye config sample
+  command: cp /usr/local/share/motioneye/extra/motioneye.conf.sample /etc/motioneye/motioneye.conf
+
+- name: Create motioneye data directory
+  file:
+    path: /var/lib/motioneye
+    state: directory
+
+- name: Copy motioneye systemd unit file
+  command: cp /usr/local/share/motioneye/extra/motioneye.systemd-unit-local /etc/systemd/system/motioneye.service
+
+- name: Reload systemd daemon and enable motioneye service
+  command: systemctl daemon-reload
+
+- name: Reload systemd daemon and enable motioneye service part2
+  command: systemctl enable motioneye
+
+- name: Start motioneye service
+  service:
+    name: motioneye
+    state: started
+
+- name: Upgrade motioneye package
+  command: pip install motioneye --upgrade
+
+- name: Restart motioneye service
+  service:
+    name: motioneye
+    state: restarted
