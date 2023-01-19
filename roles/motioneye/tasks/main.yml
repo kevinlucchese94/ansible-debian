@@ -9,10 +9,10 @@
     update_cache: yes
 
 - name: Download motion package
-  command: wget https://github.com/Motion-Project/motion/releases/download/release-4.3.2/pi_buster_motion_4.3.2-1_armhf.deb
+  command: wget https://github.com/Motion-Project/motion/releases/download/release-4.3.2/bionic_motion_4.5.1-1_amd64.deb
 
 - name: Install motion package
-  command: dpkg -i pi_buster_motion_4.3.2-1_armhf.deb
+  command: dpkg -i bionic_motion_4.5.1-1_amd64.deb
 
 - name: Stop and disable motion service
   service:
