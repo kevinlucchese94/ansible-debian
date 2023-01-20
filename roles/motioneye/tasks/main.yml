@@ -33,7 +33,7 @@
       - libffi-dev
       - libzbar-dev
       - libzbar0
-      state: present
+    state: present
     update_cache: yes
 
 - name: Download and install pip
