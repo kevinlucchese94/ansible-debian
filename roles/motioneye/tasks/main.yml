@@ -1,18 +1,18 @@
 - name: Install required packages
   apt:
     name:
+      - motion
       - ffmpeg
-      - libmariadb3
-      - libpq5
-      - libmicrohttpd12
+      - v4l-utils
+      - python2
     state: present
     update_cache: yes
 
 - name: Download motion package
-  command: wget https://github.com/Motion-Project/motion/releases/download/release-4.5.1/bullseye_motion_4.5.1-1_amd64.deb
+  command: curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 
 - name: Install motion package
-  command: dpkg -i bullseye_motion_4.5.1-1_amd64.deb
+  command: python2 get-pip.py
   
 - name: Stop and disable motion service
   service:
@@ -23,13 +23,21 @@
 - name: Install python2 and python-dev-is-python2
   apt:
     name:
-      - python2
       - python-dev-is-python2
-    state: present
+      - python-setuptools
+      - curl
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - libjpeg-dev
+      - zlib1g-dev
+      - libffi-dev
+      - libzbar-dev
+      - libzbar0
+      state: present
     update_cache: yes
 
 - name: Download and install pip
-  command: curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+  command: pip install motioneye
 
 - name: Download and install pip part2
   command: python2 get-pip.py
