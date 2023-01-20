@@ -3,11 +3,6 @@
     path: /home/kevin/scripts
     state: directory
     
-- name: Create file for Scripts
-  copy:
-    src: templates/mount_samba.sh
-    dest: /home/kevin/scripts/mount_samba.sh
-
 - name: Create file for rsync_user
   copy:
     src: templates/rsync_user.sh
