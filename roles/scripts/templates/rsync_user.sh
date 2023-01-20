@@ -1,5 +1,5 @@
 #!/bin/sh
-
+bash /home/kevin/scripts/mount_samba.sh
 #RSYNC DEI VIDEO 
 remote_dir="/home/kevin/foto_e_video/Video"
 local_dir="/home/kevin/"
