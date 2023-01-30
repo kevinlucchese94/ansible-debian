@@ -1,11 +1,13 @@
-- name: Create Home directory for Photoprism
-  file:
-    path: /home/kevin/plexserver
-    state: directory
-
-- name: Create Docker Compose file for plexserver
-  copy:
-    src: templates/docker-compose.yml
-    dest: /home/kevin/plexserver/docker-compose.yml
-- name: Install plexserver using Docker Compose
-  command: "docker-compose -f /home/kevin/plexserver/docker-compose.yml up -d"
+- name: Install Plex Media Server on Debian 11
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - apt-transport-https
+    - curl
+  shell: |
+    curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add -
+    echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list
+    sudo apt update
+    sudo apt install plexmediaserver
