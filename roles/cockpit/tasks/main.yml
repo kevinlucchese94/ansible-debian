@@ -15,9 +15,48 @@
 
 - name: Install cockpit-navigator package
   command: dpkg -i cockpit-navigator_0.5.10-1focal_all.deb
+- name: Install ntfs-3g
+  become: true
+  apt:
+    name: ntfs-3g
+    state: present
 
-- name: Enable and start cockpit service
+- name: Install and configure Samba
+  become: true
+  apt:
+    name: samba
+    state: present
+
+- name: Download and Install cockpit-samba-manager
+  shell: wget https://github.com/45Drives/cockpit-samba-manager/releases/download/v1.0.6/cockpit-samba-manager_1.0.6-1focal_all.deb
+
+- name: Download and Install cockpit-samba-manager
+  become: true
+  shell: apt install -y ./cockpit-samba-manager_1.0.6-1focal_all.deb
+
+- name: Include registry section in smb.conf
+  become: true
+  lineinfile:
+    path: /etc/samba/smb.conf
+    line: 'include = registry'
+    state: present
+    insertafter: '\[global\]'
+
+- name: Restart Samba service
+  become: true
+  service:
+    name: smbd
+    state: restarted
+
+- name: Restart Cockpit service
+  become: true
   service:
     name: cockpit.socket
+    state: restarted
+
+- name: Enable and start Cockpit service
+  service:
+    name: cockpit
     state: started
-    enabled: yes
+    enabled: true
+  become: true
