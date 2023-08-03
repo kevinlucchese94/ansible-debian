@@ -9,4 +9,5 @@
     dest: /home/kevin/filemanager/docker-compose.yml
     
 - name: Create filemanager container
-  command: docker-compose -f /home/kevin/filemanager/docker-compose.yml up -d
+  command: docker-compose -f docker-compose.yml up -d
+  chdir: /home/kevin/filemanager
