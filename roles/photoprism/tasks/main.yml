@@ -8,6 +8,3 @@
     src: templates/docker-compose.yml
     dest: /home/kevin/photoprism/docker-compose.yml
     
-- name: Install Photoprism using Docker Compose
-  command: "docker-compose -f docker-compose.yml up -d"
-  chdir: /home/kevin/photoprism

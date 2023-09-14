@@ -1,6 +1,7 @@
 - name: Main Raspberry
   hosts:
     - localhost
+  become: true
   roles:
     - sudoers
     - cockpit

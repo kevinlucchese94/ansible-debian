@@ -8,6 +8,3 @@
     src: templates/docker-compose.yml
     dest: /home/kevin/plexserver/docker-compose.yml
 
-- name: Install plexserver using Docker Compose
-  command: "docker-compose -f docker-compose.yml up -d"
-  chdir: /home/kevin/plexserver
