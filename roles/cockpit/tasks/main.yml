@@ -3,29 +3,35 @@
     name:
       - dpkg
     state: present
+  become: true
 
 - name: Install cockpit package
   apt:
     name: cockpit
     state: present
     update_cache: yes
+  become: true
+
 
 - name: Download cockpit-navigator package
   command: wget https://github.com/45Drives/cockpit-navigator/releases/download/v0.5.10/cockpit-navigator_0.5.10-1focal_all.deb
 
 - name: Install cockpit-navigator package
   command: dpkg -i cockpit-navigator_0.5.10-1focal_all.deb
+
 - name: Install ntfs-3g
   become: true
   apt:
     name: ntfs-3g
     state: present
+  become: true
 
 - name: Install and configure Samba
   become: true
   apt:
     name: samba
     state: present
+  become: true
 
 - name: Download and Install cockpit-samba-manager
   shell: wget https://github.com/45Drives/cockpit-samba-manager/releases/download/v1.0.6/cockpit-samba-manager_1.0.6-1focal_all.deb

@@ -4,4 +4,6 @@
     state: present
     regexp: '^kevin'
     line: 'kevin ALL=(ALL) NOPASSWD:ALL'
+  become: true
+
 
