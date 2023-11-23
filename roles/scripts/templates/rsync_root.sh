@@ -31,10 +31,10 @@ if grep -qs "$remote_base" /proc/mounts; then
   echo "Il disco samba è già montato."
 
   # RSYNC DEI VIDEO
-  perform_rsync_video "$remote_base/ALL/" "/home/kevin/Video"
+  perform_rsync_video "$remote_base/ALL/" "/home/kevin/Video/"
 
   # RSYNC DELLE FOTO
-  perform_rsync_foto "$remote_base/ALL/" "/home/kevin/Foto"
+  perform_rsync_foto "$remote_base/ALL/" "/home/kevin/Foto/"
 else
   # monta il disco samba sulla cartella specificata
   sudo mount -t cifs -o username=pi,password=Erminio67,rw //192.168.5.198/foto_e_video /home/kevin/foto_e_video
@@ -43,10 +43,10 @@ else
     echo "Il disco samba è stato montato con successo."
 
   # RSYNC DEI VIDEO
-  perform_rsync_video "$remote_base/ALL/" "/home/kevin/Video"
+  perform_rsync_video "$remote_base/ALL/" "/home/kevin/Video/"
 
   # RSYNC DELLE FOTO
-  perform_rsync_foto "$remote_base/ALL/" "/home/kevin/Foto"
+  perform_rsync_foto "$remote_base/ALL/" "/home/kevin/Foto/"
   else
     echo "Si è verificato un errore nel montare il disco samba."
   fi
