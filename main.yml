@@ -1,8 +1,11 @@
-- name: Main Raspberry
+- name: Main install PC personale
   hosts:
-    - localhost
+    - target
   become: true
+  vars_files:
+    - vars.yml
   roles:
+    - crea-utente
     - sudoers
     - cockpit
     - docker
