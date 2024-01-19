@@ -1,0 +1,10 @@
+- name: Create Home directory for motioneye
+  file:
+    path: /home/{{ nome }}/motioneye
+    state: directory
+   
+- name: Create Docker Compose file for motioneye
+  template:
+    src: templates/docker-compose.yml
+    dest: /home/{{ nome }}/motioneye/docker-compose.yml
+    

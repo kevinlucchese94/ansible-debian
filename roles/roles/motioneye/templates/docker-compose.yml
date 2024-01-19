@@ -1,0 +1,12 @@
+---
+version: "3.0"
+services:
+  motioneye:
+    container_name: motioneye
+    image: ccrisan/motioneye:master-armhf
+    volumes:
+    - "/etc/localtime:/etc/localtime:ro"
+    - "/home/{{ nome }}/motioneye:/etc/motioneye"
+    - "/home/{{ nome }}/motioneye/storage:/var/lib/motioneye"
+    network_mode: host
+    restart: always

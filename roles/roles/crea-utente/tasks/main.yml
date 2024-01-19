@@ -1,0 +1,44 @@
+- name: Creazione di un nuovo utente
+  user:
+    name: "{{ nome }}"
+    update_password: always
+    password: "{{ password | password_hash('sha512') }}"
+    groups: sudo, dialout, root
+    createhome: true
+    shell: "/bin/bash"
+    state: present
+
+- name: Configurazione dell'accesso dell'utente al login
+  copy:
+    dest: /etc/security/limits.d/{{ nome }}.conf
+    content: |
+      {{ nome }}} hard nofile 65536
+      {{ nome }} soft nofile 65536
+
+- name: Aggiungi utente al gruppo sudoers
+  vars:
+    username: "{{ nome }}"
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^%sudo"
+    line: "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL"
+    validate: "visudo -cf %s"
+    state: present
+
+- name: Riavvio del servizio systemd-logind
+  systemd:
+    name: systemd-logind
+    state: restarted
+
+- name: Verificare le credenziali dell'utente
+  shell: echo "test"
+  become_user: "{{ nome }}"
+
+- name: Verificare la shell di default dell'utente
+  shell: cat /etc/passwd | grep "{{ nome }}"
+
+- name: Verificare le autorizzazioni dell'utente
+  shell: ls -ld /home/"{{ nome }}"
+
+- name: Verificare le autorizzazioni della shell
+  shell: ls -l /bin/bash

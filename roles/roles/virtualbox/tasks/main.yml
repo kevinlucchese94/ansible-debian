@@ -1,0 +1,64 @@
+- name: Aggiorna cache APT
+  apt:
+    update_cache: yes
+
+- name: Installa Samba
+  apt:
+    name: samba
+    state: present
+
+- name: Installa rSync
+  apt:
+    name: rsync
+    state: present
+
+- name: Installa Thunderbird
+  apt:
+    name: thunderbird
+    state: present
+
+- name: Installa VirtualBox
+  apt:
+    name: virtualbox
+    state: present
+
+- name: Installazione di VLC
+  apt:
+    name: vlc
+    state: present
+
+- name: Installazione di transmission
+  apt:
+    name: transmission
+    state: present
+
+- name: Scarica il pacchetto di installazione di Google Chrome
+  get_url:
+    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dest: /tmp/google-chrome-stable_current_amd64.deb
+
+
+- name: Installa il pacchetto di Google Chrome
+  apt:
+    deb: /tmp/google-chrome-stable_current_amd64.deb
+    state: present
+
+- name: Rimuovi il pacchetto di installazione di Google Chrome
+  file:
+    path: /tmp/google-chrome-stable_current_amd64.deb
+    state: absent
+
+- name: Scarica il pacchetto di installazione di nomachine_8.5.3_1_amd64.deb
+  get_url:
+    url: https://download.nomachine.com/download/8.5/Linux/nomachine_8.5.3_1_amd64.deb
+    dest: /tmp/nomachine_8.5.3_1_amd64.deb
+
+- name: Installa il pacchetto di nomachine_8.5.3_1_amd64.deb
+  apt:
+    deb: /tmp/nomachine_8.5.3_1_amd64.deb
+    state: present
+
+- name: Rimuovi il pacchetto di installazione di nomachine_8.5.3_1_amd64.deb
+  file:
+    path: /tmp/nomachine_8.5.3_1_amd64.deb
+    state: absent
