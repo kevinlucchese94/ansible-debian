@@ -1,17 +1,36 @@
-- name: Main install PC personale
-  hosts:
-    - target
+- name: Configurazione del PC personale
+  hosts: target
   become: true
   vars_files:
     - vars.yml
   roles:
-    - crea-utente
-    - sudoers
-    - cockpit
-    - docker
-    - filemanager
-    - motioneye
-    - photoprism
-    - plexserver
-    - scripts
-    - virtualbox
+    - role: crea-utente
+      tags:
+        - utente
+    - role: sudoers
+      tags:
+        - sudo
+    - role: cockpit
+      tags:
+        - cockpit
+    - role: docker
+      tags:
+        - docker
+    - role: filemanager
+      tags:
+        - filemanager
+    - role: motioneye
+      tags:
+        - motioneye
+    - role: photoprism
+      tags:
+        - photoprism
+    - role: plexserver
+      tags:
+        - plex
+    - role: scripts
+      tags:
+        - scripts
+    - role: virtualbox
+      tags:
+        - virtualbox
