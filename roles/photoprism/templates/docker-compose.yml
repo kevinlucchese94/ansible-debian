@@ -95,8 +95,8 @@ services:
     working_dir: "/photoprism" # do not change or remove
     ## Storage Folders: "~" is a shortcut for your home directory, "." for the current directory
     volumes:
-      - "/home/kevin/Foto:/photoprism/originals/Foto"                # Example
-      - "/home/kevin/Video:/photoprism/originals/Video"
+      - "/home/{{ nome }}/Foto:/photoprism/originals/Foto"                # Example
+      - "/home/{{ nome }}/Video:/photoprism/originals/Video"
       - "~/Pictures:/photoprism/originals"               # Original media files (DO NOT REMOVE)
       # - "/example/family:/photoprism/originals/family" # *Additional* media folders can be mounted like this
       # - "~/Import:/photoprism/import"                  # *Optional* base folder from which files can be imported to originals

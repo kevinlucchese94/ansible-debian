@@ -1,4 +1,16 @@
-# Guida all'installazione
-il mio consiglio è di installare un DEBIAN PULITO e durante la fase di installazione creare l'utente "utente" con pwd "4". Successivamente aggiungerlo tra i sudoers
-## Passo 1: Esegui il file "eseguimi.sh"
-Dopo l'avvio del sistema, apri il terminale e naviga nella directory in cui è presente il file "eseguimi.sh". Assicurati di avere i permessi di esecuzione sul file, altrimenti puoi impostarli con il comando seguente:
+# Configurazione del PC Personale
+
+Questo progetto Ansible è progettato per automatizzare la configurazione di un PC personale utilizzando Ansible. Il playbook `main.yml` contiene una serie di ruoli che installano e configurano varie componenti, come Docker, Cockpit, Samba, e altro ancora.
+
+## Istruzioni
+
+### 1. Modifica le variabili
+
+Prima di eseguire il playbook, assicurati di modificare il file `vars.yml` con le informazioni corrette. In particolare, specifica il nome utente (`utente`), la password (`password`), e qualsiasi altra variabile necessaria per la configurazione.
+
+### 2. Esegui il playbook Ansible
+
+Dopo aver aggiornato le variabili, esegui il playbook Ansible con il seguente comando:
+
+```bash
+ansible-playbook main.yml --ask-become-pass

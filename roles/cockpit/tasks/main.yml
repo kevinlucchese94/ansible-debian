@@ -1,69 +1,60 @@
-- name: Install packages for cockpit
-  apt:
-    name:
-      - dpkg
-    state: present
+- name: Installazione e configurazione di Cockpit
+  hosts: target
   become: true
+  tasks:
+    - name: Installa pacchetti necessari
+      apt:
+        name:
+          - dpkg
+          - cockpit
+          - ntfs-3g
+          - samba
+        state: present
+        update_cache: yes
 
-- name: Install cockpit package
-  apt:
-    name: cockpit
-    state: present
-    update_cache: yes
-  become: true
+    - name: Download cockpit-navigator package
+      get_url:
+        url: "https://github.com/45Drives/cockpit-navigator/releases/download/v0.5.10/cockpit-navigator_0.5.10-1focal_all.deb"
+        dest: "/tmp/cockpit-navigator.deb"
 
+    - name: Installa cockpit-navigator package
+      apt:
+        deb: "/tmp/cockpit-navigator.deb"
+      become: true
 
-- name: Download cockpit-navigator package
-  command: wget https://github.com/45Drives/cockpit-navigator/releases/download/v0.5.10/cockpit-navigator_0.5.10-1focal_all.deb
+    - name: Download cockpit-samba-manager package
+      get_url:
+        url: "https://github.com/45Drives/cockpit-samba-manager/releases/download/v1.0.6/cockpit-samba-manager_1.0.6-1focal_all.deb"
+        dest: "/tmp/cockpit-samba-manager.deb"
 
-- name: Install cockpit-navigator package
-  command: dpkg -i cockpit-navigator_0.5.10-1focal_all.deb
+    - name: Installa cockpit-samba-manager package
+      apt:
+        deb: "/tmp/cockpit-samba-manager.deb"
+      become: true
 
-- name: Install ntfs-3g
-  become: true
-  apt:
-    name: ntfs-3g
-    state: present
-  become: true
+    - name: Aggiungi sezione registry in smb.conf
+      lineinfile:
+        path: "/etc/samba/smb.conf"
+        line: 'include = registry'
+        state: present
+        insertafter: '\[global\]'
+      become: true
 
-- name: Install and configure Samba
-  become: true
-  apt:
-    name: samba
-    state: present
-  become: true
+    - name: Riavvia il servizio Samba
+      service:
+        name: smbd
+        state: restarted
+      become: true
 
-- name: Download and Install cockpit-samba-manager
-  shell: wget https://github.com/45Drives/cockpit-samba-manager/releases/download/v1.0.6/cockpit-samba-manager_1.0.6-1focal_all.deb
+    - name: Riavvia il servizio Cockpit
+      service:
+        name: cockpit.socket
+        state: restarted
+      become: true
 
-- name: Download and Install cockpit-samba-manager
-  become: true
-  shell: apt install -y ./cockpit-samba-manager_1.0.6-1focal_all.deb
-
-- name: Include registry section in smb.conf
-  become: true
-  lineinfile:
-    path: /etc/samba/smb.conf
-    line: 'include = registry'
-    state: present
-    insertafter: '\[global\]'
-
-- name: Restart Samba service
-  become: true
-  service:
-    name: smbd
-    state: restarted
-
-- name: Restart Cockpit service
-  become: true
-  service:
-    name: cockpit.socket
-    state: restarted
-
-- name: Enable and start Cockpit service
-  service:
-    name: cockpit
-    state: started
-    enabled: true
-  become: true
-
+    - name: Abilita e avvia il servizio Cockpit
+      service:
+        name: cockpit
+        state: started
+        enabled: true
+      become: true

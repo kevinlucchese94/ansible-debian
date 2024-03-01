@@ -1,25 +1,25 @@
 - name: Create Home directory for Scripts
   file:
-    path: /home/kevin/scripts
+    path: /home/{{ nome }}/scripts
     state: directory
     
 - name: Create file for rsync_user
-  copy:
+  template:
     src: templates/rsync_user.sh
-    dest: /home/kevin/scripts/rsync_user.sh
+    dest: /home/{{ nome }}/scripts/rsync_user.sh
     
 - name: Create file for rsync_root
-  copy:
+  template:
     src: templates/rsync_root.sh
-    dest: /home/kevin/scripts/rsync_root.sh
+    dest: /home/{{ nome }}/scripts/rsync_root.sh
     
 - name: Add task to user crontab
   cron:
     name: "RSYNC FOTO E VIDEO"
-    user: "kevin"
+    user: "{{ nome }}"
     minute: "0"
     hour: "9"
-    job: "/home/kevin/scripts/rsync_user.sh"
+    job: "/home/{{ nome }}/scripts/rsync_user.sh"
 
 - name: Add task to root crontab
   cron:
@@ -27,22 +27,22 @@
     user: "root"
     minute: "0"
     hour: "21"
-    job: "/home/kevin/scripts/rsync_root.sh"
+    job: "/home/{{ nome }}/scripts/rsync_root.sh"
 
 - name: Set permissions of file to be executable
-  command: chmod +x /home/kevin/scripts/rsync_user.sh
+  command: chmod +x /home/{{ nome }}/scripts/rsync_user.sh
 - name: Set permissions of file to be executable
-  command: chmod +x /home/kevin/scripts/rsync_root.sh
+  command: chmod +x /home/{{ nome }}/scripts/rsync_root.sh
 
 - name: Set permissions of file to be executable
   file:
-    path: /home/kevin/scripts/rsync_user.sh
+    path: /home/{{ nome }}/scripts/rsync_user.sh
     mode: "755"
     state: file
 
 - name: Set permissions of file to be executable
   file:
-    path: /home/kevin/scripts/rsync_root.sh
+    path: /home/{{ nome }}/scripts/rsync_root.sh
     mode: "755"
     state: file
 

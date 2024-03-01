@@ -1,10 +1,10 @@
 - name: Create Home directory for Photoprism
   file:
-    path: /home/kevin/photoprism
+    path: /home/{{ nome }}/photoprism
     state: directory
    
 - name: Create Docker Compose file for Photoprism
-  copy:
+  template:
     src: templates/docker-compose.yml
-    dest: /home/kevin/photoprism/docker-compose.yml
+    dest: /home/{{ nome }}/photoprism/docker-compose.yml
     

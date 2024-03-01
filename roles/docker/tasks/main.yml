@@ -1,45 +1,37 @@
-- name: Update package manager
-  apt:
-    update_cache: true
+- name: Installazione di Docker
+  hosts: target
   become: true
+  tasks:
+    - name: Aggiorna il gestore dei pacchetti
+      apt:
+        update_cache: true
 
-- name: Install packages for Docker
-  apt:
-    name:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg-agent
-      - software-properties-common
-    state: present
-  become: true
+    - name: Installa pacchetti necessari per Docker
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+        state: present
 
-- name: Add Docker's official GPG key
-  apt_key:
-    url: https://download.docker.com/linux/debian/gpg
-    state: present
-  become: true
+    - name: Aggiungi la chiave GPG ufficiale di Docker
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
 
-- name: Add Debian 11 repository for Docker
-  apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
-    state: present
-  become: true
+    - name: Aggiungi il repository di Docker per Debian 11
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+        state: present
 
-- name: Update package manager
-  apt:
-    update_cache: true
-  become: true
+    - name: Installa Docker
+      apt:
+        name: docker-ce
+        state: present
 
-
-- name: Install Docker
-  apt:
-    name: docker-ce
-    state: present
-  become: true
-
-- name: Install Docker Compose
-  apt:
-    name: docker-compose
-    state: present
-  become: true
+    - name: Installa Docker Compose
+      apt:
+        name: docker-compose
+        state: present
