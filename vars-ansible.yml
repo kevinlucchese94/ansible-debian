@@ -1,0 +1,14 @@
+    cockpit_packages:
+      - dpkg
+      - cockpit
+      - ntfs-3g
+      - samba
+    cockpit_navigator_version: "0.5.10"
+    cockpit_samba_manager_version: "1.0.6"
+
+    docker_gpg_key_url: "https://download.docker.com/linux/debian/gpg"
+    docker_repository: "deb [arch=amd64] https://download.docker.com/linux/debian bookworm stable"
+    docker_packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
