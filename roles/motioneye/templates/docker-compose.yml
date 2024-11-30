@@ -6,7 +6,7 @@ services:
     image: ccrisan/motioneye:master-armhf
     volumes:
     - "/etc/localtime:/etc/localtime:ro"
-    - "/home/{{ nome }}/motioneye:/etc/motioneye"
-    - "/home/{{ nome }}/motioneye/storage:/var/lib/motioneye"
+    - "/home/{{ utente }}/motioneye:/etc/motioneye"
+    - "/home/{{ utente }}/motioneye/storage:/var/lib/motioneye"
     network_mode: host
     restart: always

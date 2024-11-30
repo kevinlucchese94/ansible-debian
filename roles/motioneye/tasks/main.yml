@@ -1,6 +1,6 @@
 - name: Create Home directory for motioneye
   file:
-    path: /home/{{ nome }}/motioneye
+    path: /home/{{ utente }}/motioneye
     state: directory
 
 - name: Install Docker Compose

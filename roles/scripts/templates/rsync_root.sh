@@ -2,11 +2,11 @@
 
 # Configurazione
 REMOTE_SHARE="//192.168.5.254/FRITZ.NAS/FOTO_VIDEO"
-MOUNT_POINT="/home/{{ nome }}/foto_e_video"
-SOURCE_VIDEO="/home/{{ nome }}/Video/"
-SOURCE_PHOTO="/home/{{ nome }}/Foto/"
-CREDENTIALS_FILE="/home/{{ nome }}/.smbcredentials"
-LOG_FILE="/home/{{ nome }}/rsync_to_nas_log.txt"
+MOUNT_POINT="/home/{{ utente }}/foto_e_video"
+SOURCE_VIDEO="/home/{{ utente }}/Video/"
+SOURCE_PHOTO="/home/{{ utente }}/Foto/"
+CREDENTIALS_FILE="/home/{{ utente }}/.smbcredentials"
+LOG_FILE="/home/{{ utente }}/rsync_to_nas_log.txt"
 
 RSYNC_OPTIONS="-zvrah --delete --include='*/'"
 

@@ -1,6 +1,6 @@
 - name: Creazione di un nuovo utente
   user:
-    name: "{{ nome }}"
+    name: "{{ utente }}"
     update_password: always
     password: "{{ password | password_hash('sha512') }}"
     groups: sudo,dialout
@@ -10,19 +10,19 @@
 
 - name: Configurazione dei limiti di sicurezza per l'utente
   copy:
-    dest: "/etc/security/limits.d/{{ nome }}.conf"
+    dest: "/etc/security/limits.d/{{ utente }}.conf"
     content: |
-      {{ nome }} hard nofile 65536
-      {{ nome }} soft nofile 65536
+      {{ utente }} hard nofile 65536
+      {{ utente }} soft nofile 65536
     mode: '0644'
 
 - name: Configurazione di sudoers per l'utente e il gruppo
   lineinfile:
     path: "/etc/sudoers"
-    regexp: "^(%sudo|{{ nome }})"
+    regexp: "^(%sudo|{{ utente }})"
     line: |
       %sudo ALL=(ALL:ALL) NOPASSWD:ALL
-      {{ nome }} ALL=(ALL) NOPASSWD:ALL
+      {{ utente }} ALL=(ALL) NOPASSWD:ALL
     validate: "visudo -cf %s"
     state: present
 
@@ -34,9 +34,9 @@
 
 - name: Verifica configurazione utente
   shell: |
-    echo "Test login"; whoami; cat /etc/passwd | grep "{{ nome }}"; ls -ld "/home/{{ nome }}"; ls -l /bin/bash
+    echo "Test login"; whoami; cat /etc/passwd | grep "{{ utente }}"; ls -ld "/home/{{ utente }}"; ls -l /bin/bash
   register: verifica_output
-  become_user: "{{ nome }}"
+  become_user: "{{ utente }}"
 
 - debug:
     var: verifica_output.stdout

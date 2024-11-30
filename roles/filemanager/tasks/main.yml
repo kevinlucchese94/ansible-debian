@@ -1,9 +1,9 @@
 - name: Create filemanager directory
   file:
-    path: /home/{{ nome }}/filemanager
+    path: /home/{{ utente }}/filemanager
     state: directory
 
 - name: Copy the docker-compose.yml file
   copy:
     src: templates/docker-compose.yml
-    dest: /home/{{ nome }}/filemanager/docker-compose.yml
+    dest: /home/{{ utente }}/filemanager/docker-compose.yml
