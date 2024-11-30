@@ -28,7 +28,7 @@ cd ansible-debian
 # Salva le credenziali criptate
 echo "Creazione del file vars.yml con Ansible Vault..."
 echo -e "utente: $utente\npassword: $password\nutenterasperry: $utenterasperry\npasswordrasperry: $passwordrasperry" > vars.yml
-#ansible-vault encrypt vars.yml
+ansible-vault encrypt vars.yml
 
 # Crea il file ansible.cfg
 echo "Configurazione di ansible.cfg..."
