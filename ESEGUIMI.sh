@@ -1,35 +1,47 @@
 #!/bin/bash
+set -e
 
-# Richiedi il nome utente
+# Richiedi input
 read -p "Inserisci il nome utente per il nuovo account: " utente
-# Richiedi la password per il nuovo utente
 read -s -p "Inserisci la password per il nuovo utente: " password
 echo
-# Richiedi il nome utente rasperry
-read -p "Inserisci il nome utente rasperry per samba: " utenterasperry
-# Richiedi la password per il nuovo utente
-read -s -p "Inserisci la password rasperry per samba: " passwordrasperry
+read -p "Inserisci il nome utente Raspberry per Samba: " utenterasperry
+read -s -p "Inserisci la password Raspberry per Samba: " passwordrasperry
 echo
+
+# Verifica input
+if [ -z "$utente" ] || [ -z "$password" ] || [ -z "$utenterasperry" ] || [ -z "$passwordrasperry" ]; then
+    echo "Errore: Tutti i campi sono obbligatori."
+    exit 1
+fi
+
 # Installa Git e Ansible
+echo "Aggiornamento e installazione di Git e Ansible..."
 sudo apt-get update
 sudo apt-get install -y git ansible
 
-# Clone ansible-debian repository
+# Clona il repository
+echo "Clonazione del repository Ansible..."
 git clone https://github.com/kevinlucchese94/ansible-debian.git
-
-# Entra nella directory scaricata
 cd ansible-debian
 
-# Salva il nome utente e la password nel file vars.yml
-echo -e "utente: $utenterasperry\npassword: $password" > vars.yml
-echo -e "utenterasperry: $utenterasperry\npasswordrasperry: $passwordrasperry" >> vars.yml
+# Salva le credenziali criptate
+echo "Creazione del file vars.yml con Ansible Vault..."
+echo -e "utente: $utente\npassword: $password\nutenterasperry: $utenterasperry\npasswordrasperry: $passwordrasperry" > vars.yml
+ansible-vault encrypt vars.yml
 
-# Crea il file hosts
-echo "[target]" > hosts
-echo "localhost" >> hosts
-
-# Crea il file ansible.cfg per specificare l'utente sudo
+# Crea il file ansible.cfg
+echo "Configurazione di ansible.cfg..."
+if [ -f ansible.cfg ]; then
+    cp ansible.cfg ansible.cfg.bak
+    echo "Backup di ansible.cfg salvato come ansible.cfg.bak"
+fi
 echo -e "[defaults]\nremote_user = $utente" > ansible.cfg
 
-# Esegui il playbook Ansible
-ansible-playbook main.yml --ask-become-pass
+# Esegui il playbook
+echo "Esecuzione del playbook Ansible..."
+ansible-playbook main.yml --ask-vault-pass --ask-become-pass
+
+# Pulizia
+echo "Pulizia dei file temporanei..."
+rm -f vars.yml

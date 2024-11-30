@@ -3,48 +3,40 @@
     name: "{{ nome }}"
     update_password: always
     password: "{{ password | password_hash('sha512') }}"
-    groups: sudo,dialout,root
+    groups: sudo,dialout
     createhome: true
     shell: "/bin/bash"
     state: present
 
-- name: Configurazione dell'accesso dell'utente al login
+- name: Configurazione dei limiti di sicurezza per l'utente
   copy:
     dest: "/etc/security/limits.d/{{ nome }}.conf"
     content: |
       {{ nome }} hard nofile 65536
       {{ nome }} soft nofile 65536
+    mode: '0644'
 
-- name: Aggiungi utente al gruppo sudoers
+- name: Configurazione di sudoers per l'utente e il gruppo
   lineinfile:
     path: "/etc/sudoers"
-    regexp: "^%sudo"
-    line: "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL"
+    regexp: "^(%sudo|{{ nome }})"
+    line: |
+      %sudo ALL=(ALL:ALL) NOPASSWD:ALL
+      {{ nome }} ALL=(ALL) NOPASSWD:ALL
     validate: "visudo -cf %s"
     state: present
-
-- name: Aggiungi {{ nome }} al sudoers file
-  lineinfile:
-    dest: "/etc/sudoers"
-    state: present
-    regexp: '^{{ nome }}'
-    line: '{{ nome }} ALL=(ALL) NOPASSWD:ALL'
-  become: true
 
 - name: Riavvio del servizio systemd-logind
   systemd:
     name: "systemd-logind"
     state: restarted
+  when: logind_restart_required | default(true)
 
-- name: Verificare le credenziali dell'utente
-  command: echo "test"
+- name: Verifica configurazione utente
+  shell: |
+    echo "Test login"; whoami; cat /etc/passwd | grep "{{ nome }}"; ls -ld "/home/{{ nome }}"; ls -l /bin/bash
+  register: verifica_output
   become_user: "{{ nome }}"
 
-- name: Verificare la shell di default dell'utente
-  command: cat /etc/passwd | grep "{{ nome }}"
-
-- name: Verificare le autorizzazioni dell'utente
-  command: ls -ld "/home/{{ nome }}"
-
-- name: Verificare le autorizzazioni della shell
-  command: ls -l /bin/bash
+- debug:
+    var: verifica_output.stdout

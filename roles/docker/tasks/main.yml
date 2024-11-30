@@ -1,6 +1,13 @@
-- name: Installazione di Docker
+- name: Installazione di Docker su Debian 12
   hosts: target
   become: true
+  vars:
+    docker_gpg_key_url: "https://download.docker.com/linux/debian/gpg"
+    docker_repository: "deb [arch=amd64] https://download.docker.com/linux/debian bookworm stable"
+    docker_packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
   tasks:
     - name: Aggiorna il gestore dei pacchetti
       apt:
@@ -12,26 +19,43 @@
           - apt-transport-https
           - ca-certificates
           - curl
-          - gnupg-agent
-          - software-properties-common
+          - gnupg
+          - lsb-release
         state: present
 
     - name: Aggiungi la chiave GPG ufficiale di Docker
       apt_key:
-        url: https://download.docker.com/linux/debian/gpg
+        url: "{{ docker_gpg_key_url }}"
         state: present
 
-    - name: Aggiungi il repository di Docker per Debian 11
+    - name: Aggiungi il repository Docker per Debian 12
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+        repo: "{{ docker_repository }}"
         state: present
 
-    - name: Installa Docker
+    - name: Aggiorna i pacchetti dopo aver aggiunto il repository Docker
       apt:
-        name: docker-ce
+        update_cache: true
+
+    - name: Installa Docker e componenti
+      apt:
+        name: "{{ docker_packages }}"
         state: present
 
-    - name: Installa Docker Compose
-      apt:
-        name: docker-compose
-        state: present
+    - name: Scarica Docker Compose plugin
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-linux-x86_64"
+        dest: "/usr/local/bin/docker-compose"
+        mode: '0755'
+
+    - name: Verifica installazione di Docker
+      command: docker --version
+      register: docker_version
+    - debug:
+        msg: "Versione di Docker: {{ docker_version.stdout }}"
+
+    - name: Verifica installazione di Docker Compose
+      command: docker-compose --version
+      register: compose_version
+    - debug:
+        msg: "Versione di Docker Compose: {{ compose_version.stdout }}"

@@ -2,6 +2,11 @@
   file:
     path: /home/{{ nome }}/scripts
     state: directory
+
+- name: Create file for credentials
+  template:
+    src: templates/.smbcredentials
+    dest: /home/{{ nome }}/.smbcredentials
     
 - name: Create file for rsync_user
   template:

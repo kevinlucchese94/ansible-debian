@@ -1,36 +1,38 @@
 - name: Installazione e configurazione di Cockpit
   hosts: target
   become: true
+  vars:
+    cockpit_packages:
+      - dpkg
+      - cockpit
+      - ntfs-3g
+      - samba
+    cockpit_navigator_version: "0.5.10"
+    cockpit_samba_manager_version: "1.0.6"
   tasks:
     - name: Installa pacchetti necessari
       apt:
-        name:
-          - dpkg
-          - cockpit
-          - ntfs-3g
-          - samba
+        name: "{{ cockpit_packages }}"
         state: present
         update_cache: yes
 
     - name: Download cockpit-navigator package
       get_url:
-        url: "https://github.com/45Drives/cockpit-navigator/releases/download/v0.5.10/cockpit-navigator_0.5.10-1focal_all.deb"
+        url: "https://github.com/45Drives/cockpit-navigator/releases/download/v{{ cockpit_navigator_version }}/cockpit-navigator_{{ cockpit_navigator_version }}-1focal_all.deb"
         dest: "/tmp/cockpit-navigator.deb"
 
     - name: Installa cockpit-navigator package
       apt:
         deb: "/tmp/cockpit-navigator.deb"
-      become: true
 
     - name: Download cockpit-samba-manager package
       get_url:
-        url: "https://github.com/45Drives/cockpit-samba-manager/releases/download/v1.0.6/cockpit-samba-manager_1.0.6-1focal_all.deb"
+        url: "https://github.com/45Drives/cockpit-samba-manager/releases/download/v{{ cockpit_samba_manager_version }}/cockpit-samba-manager_{{ cockpit_samba_manager_version }}-1focal_all.deb"
         dest: "/tmp/cockpit-samba-manager.deb"
 
     - name: Installa cockpit-samba-manager package
       apt:
         deb: "/tmp/cockpit-samba-manager.deb"
-      become: true
 
     - name: Aggiungi sezione registry in smb.conf
       lineinfile:
@@ -38,23 +40,24 @@
         line: 'include = registry'
         state: present
         insertafter: '\[global\]'
-      become: true
 
-    - name: Riavvia il servizio Samba
+    - name: Riavvia i servizi necessari
       service:
-        name: smbd
+        name: "{{ item }}"
         state: restarted
-      become: true
-
-    - name: Riavvia il servizio Cockpit
-      service:
-        name: cockpit.socket
-        state: restarted
-      become: true
+      loop:
+        - smbd
+        - cockpit.socket
 
     - name: Abilita e avvia il servizio Cockpit
       service:
         name: cockpit
         state: started
         enabled: true
-      become: true
+
+    - name: Verifica stato del servizio Cockpit
+      command: systemctl status cockpit
+      register: cockpit_status
+
+    - debug:
+        var: cockpit_status.stdout

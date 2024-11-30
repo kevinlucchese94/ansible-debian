@@ -1,39 +1,43 @@
 - name: Configurazione del PC personale
-  hosts: target
+  hosts: localhost
   become: true
   vars_files:
     - vars.yml
   roles:
     - role: crea-utente
-      vars:
-        utente: "{{ nuovo_utente }}"
-        password: "{{ nuova_password }}"
       tags:
-        - utente
-    - role: sudoers
-      tags:
-        - sudo
+        - crea-utente
+        - setup
     - role: cockpit
       tags:
         - cockpit
+        - setup
     - role: docker
       tags:
         - docker
+        - setup
     - role: filemanager
       tags:
         - filemanager
+        - setup
     - role: motioneye
       tags:
         - motioneye
+        - setup
     - role: photoprism
       tags:
         - photoprism
+        - setup
     - role: plexserver
       tags:
         - plex
+        - setup
     - role: scripts
       tags:
         - scripts
+        - setup
     - role: virtualbox
+      when: install_virtualbox | default(false)
       tags:
         - virtualbox
+        - setup

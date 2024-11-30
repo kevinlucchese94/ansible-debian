@@ -1,91 +1,14 @@
-- name: Install required packages
-  apt:
-    name:
-      - motion
-      - ffmpeg
-      - v4l-utils
-      - python2
-    state: present
-    update_cache: yes
-
-- name: Download motion package
-  command: curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
-
-- name: Install motion package
-  command: python2 get-pip.py
-  
-- name: Stop and disable motion service
-  service:
-    name: motion
-    state: stopped
-    enabled: no
-
-- name: Install python2 and python-dev-is-python2
-  apt:
-    name:
-      - python-dev-is-python2
-      - python-setuptools
-      - curl
-      - libssl-dev
-      - libcurl4-openssl-dev
-      - libjpeg-dev
-      - zlib1g-dev
-      - libffi-dev
-      - libzbar-dev
-      - libzbar0
-    state: present
-    update_cache: yes
-
-- name: Download and install pip
-  command: pip install motioneye
-
-- name: Download and install pip part2
-  command: python2 get-pip.py
-
-- name: Install additional packages for motioneye
-  apt:
-    name:
-      - libssl-dev
-      - libcurl4-openssl-dev
-      - libjpeg-dev
-      - zlib1g-dev
-    state: present
-    update_cache: yes
-
-- name: Install motioneye
-  command: pip2 install motioneye
-
-- name: Create motioneye config directory
+- name: Create Home directory for motioneye
   file:
-    path: /etc/motioneye
+    path: /home/{{ nome }}/motioneye
     state: directory
 
-- name: Copy motioneye config sample
-  command: cp /usr/local/share/motioneye/extra/motioneye.conf.sample /etc/motioneye/motioneye.conf
-
-- name: Create motioneye data directory
-  file:
-    path: /var/lib/motioneye
-    state: directory
-
-- name: Copy motioneye systemd unit file
-  command: cp /usr/local/share/motioneye/extra/motioneye.systemd-unit-local /etc/systemd/system/motioneye.service
-
-- name: Reload systemd daemon and enable motioneye service
-  command: systemctl daemon-reload
-
-- name: Reload systemd daemon and enable motioneye service part2
-  command: systemctl enable motioneye
-
-- name: Start motioneye service
-  service:
-    name: motioneye
-    state: started
-
-- name: Upgrade motioneye package
-  command: pip install motioneye --upgrade
-
-- name: Restart motioneye service
-  service:
-    name: motioneye
-    state: restarted
+- name: Install Docker Compose
+  apt:
+    name: docker-compose
+    state: present
+    
+- name: Copy docker-compose.yml file
+  copy:
+    src: templates/docker-compose.yml
+    dest: /home/pi/motioneye/docker-compose.yml
